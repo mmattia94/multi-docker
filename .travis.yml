@@ -1,0 +1,22 @@
+sudo: required
+services:
+    - docker
+
+before_install:
+    - docker build -t mattiamiceli/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+    - docker docker run -e CI=true mattiamiceli/react-test npm test
+
+after_success:
+    - docker build -t mattiamiceli/multi-client ./client 
+    - docker build -t mattiamiceli/multi-nginx ./nginx
+    - docker build -t mattiamiceli/multi-server ./server
+    - docker build -t mattiamiceli/mutli-worker ./worker
+    # Log in to the docker CLI
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+    # Push images to Travis
+    - docker push mattiamiceli/multi-client
+    - docker push mattiamiceli/multi-nginx
+    - docker push mattiamiceli/multi-server
+    - docker push mattiamiceli/multi-worker
