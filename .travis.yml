@@ -13,7 +13,7 @@ after_success:
     - docker build -t mattiamiceli/multi-client ./client 
     - docker build -t mattiamiceli/multi-nginx ./nginx
     - docker build -t mattiamiceli/multi-server ./server
-    - docker build -t mattiamiceli/mutli-worker ./worker
+    - docker build -t mattiamiceli/multi-worker ./worker
     # Log in to the docker CLI
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
     # Push images to Travis
